@@ -285,7 +285,12 @@
     const { error } = await db.auth.signInWithOtp({
       email: pendingEmail, options: { emailRedirectTo: location.origin + location.pathname } });
     busy(form, false);
-    if (error) { say(form, error.status === 429 ? "Too many requests — wait a minute and try again." : "Couldn't send the code. Check the address and try again.", "err"); return false; }
+    if (error) {
+      console.error("Sign-in error:", error);
+      say(form, error.status === 429 ? "Too many requests — wait a minute and try again."
+        : `Couldn't send the code (${error.status || "no connection"}: ${error.message || error.name}).`, "err");
+      return false;
+    }
     return true;
   }
 
