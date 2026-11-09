@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sales Signals</title>
+<style>
+  :root {
+    --bg: #f4f1ea; --ink: #1c1b19; --muted: #6b675f; --line: #d9d3c6;
+    --card: #fffdf8; --accent: #c2410c; --accent-ink: #fff; --ok: #166534; --err: #b91c1c;
+    --vh: #b91c1c; --h: #c2410c; --m: #a16207;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg: #161513; --ink: #eeeae2; --muted: #9c978c; --line: #34312c;
+            --card: #1e1d1a; --accent: #f97316; --accent-ink: #161513; --ok: #4ade80; --err: #f87171;
+            --vh: #f87171; --h: #fb923c; --m: #facc15; }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 640px; margin: 0 auto; padding: 48px 20px 64px; }
+  .kicker { font: 600 12px/1 ui-monospace, SFMono-Regular, Menlo, monospace;
+            letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+  h1 { font: 700 clamp(30px, 7vw, 42px)/1.05 Georgia, "Times New Roman", serif; margin: 10px 0 12px; letter-spacing: -.01em; }
+  .lede { color: var(--muted); margin: 0 0 32px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; margin-bottom: 20px; }
+  .card h2 { font: 700 24px/1.2 Georgia, serif; margin: 0 0 8px; }
+  .card > p { margin: 0 0 18px; color: var(--muted); }
+  .card a { color: var(--accent); }
+  h3.sec { font: 600 12px/1 ui-monospace, Menlo, monospace; letter-spacing: .12em; text-transform: uppercase;
+           color: var(--muted); margin: 30px 0 12px; padding-top: 18px; border-top: 1px solid var(--line); }
+  label { display: block; font-weight: 600; margin-bottom: 6px; }
+  .hint { color: var(--muted); font-size: 14px; margin: -2px 0 8px; }
+  .field { margin-bottom: 22px; }
+  input[type=email], input[type=text], textarea { width: 100%; padding: 11px 12px; font: inherit; color: var(--ink);
+                    background: var(--bg); border: 1px solid var(--line); border-radius: 9px; }
+  textarea { min-height: 80px; resize: vertical; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 14px; }
+  #code { font: 600 24px/1 ui-monospace, Menlo, monospace; letter-spacing: .3em; text-align: center; }
+  input:focus, textarea:focus { outline: 2px solid var(--accent); outline-offset: 1px; border-color: transparent; }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .chip { font-size: 13px; padding: 3px 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); }
+  .chip.x { text-decoration: line-through; color: var(--muted); }
+
+  /* checklists */
+  details.group { border: 1px solid var(--line); border-radius: 10px; margin-bottom: 10px; background: var(--bg); }
+  details.group > summary { list-style: none; cursor: pointer; padding: 12px 14px; display: flex; align-items: center; gap: 10px; font-weight: 600; }
+  details.group > summary::-webkit-details-marker { display: none; }
+  details.group > summary::after { content: "▾"; margin-left: auto; color: var(--muted); transition: transform .15s; }
+  details.group[open] > summary::after { transform: rotate(180deg); }
+  .count { font: 500 12px ui-monospace, Menlo, monospace; color: var(--muted); }
+  .items { padding: 0 14px 10px; }
+  .item { display: grid; grid-template-columns: 20px 1fr; gap: 4px 10px; padding: 9px 0; border-top: 1px dashed var(--line); font-weight: 400; margin: 0; cursor: pointer; }
+  .item input, summary input { width: 17px; height: 17px; margin: 2px 0 0; accent-color: var(--accent); }
+  .item .name { font-weight: 600; }
+  .item .sub { grid-column: 2; font-size: 13px; color: var(--muted); }
+  .social { grid-column: 2; font-size: 12.5px; display: flex; flex-wrap: wrap; gap: 4px 10px; }
+  .social a { color: var(--muted); text-decoration: underline; text-underline-offset: 2px; }
+  .social .on { color: var(--ok); }
+  .badge { display: inline-block; font: 600 11px/1 ui-monospace, Menlo, monospace; letter-spacing: .04em; text-transform: uppercase;
+           padding: 3px 6px; border-radius: 5px; border: 1px solid currentColor; margin-left: 6px; vertical-align: 2px; }
+  .b3 { color: var(--vh); } .b2 { color: var(--h); } .b1 { color: var(--m); } .b0 { color: var(--muted); }
+
+  .radios { display: flex; gap: 8px; flex-wrap: wrap; }
+  .radios label { flex: 1 1 150px; font-weight: 500; border: 1px solid var(--line); border-radius: 9px; padding: 10px 12px;
+                  margin: 0; cursor: pointer; background: var(--bg); }
+  .radios label:has(input:checked) { border-color: var(--accent); outline: 1px solid var(--accent); }
+  .radios input { accent-color: var(--accent); margin-right: 6px; }
+  .radios small { display: block; color: var(--muted); font-size: 12.5px; margin-left: 22px; }
+
+  .toggle { display: flex; align-items: center; gap: 10px; font-weight: 600; margin: 4px 0 22px; cursor: pointer; }
+  .toggle input { width: 18px; height: 18px; accent-color: var(--accent); }
+  button { width: 100%; padding: 14px; font-family: inherit; font-size: 16px; font-weight: 600; line-height: 1;
+           border: 0; border-radius: 10px; background: var(--accent); color: var(--accent-ink); cursor: pointer; }
+  button.ghost { background: none; color: var(--muted); font-weight: 500; font-size: 14px; padding: 10px; width: auto; }
+  button.ghost:hover { color: var(--ink); }
+  button.danger { color: var(--err); }
+  button.mini { background: none; color: var(--accent); font-size: 13px; font-weight: 600; padding: 0; width: auto; }
+  button:disabled { opacity: .6; cursor: progress; }
+  .row { display: flex; justify-content: space-between; align-items: center; margin-top: 12px; }
+  .account { display: flex; justify-content: space-between; align-items: center; font-size: 14px;
+             color: var(--muted); margin-bottom: 14px; }
+  .account b { color: var(--ink); font-weight: 600; }
+  .msg { margin-top: 14px; font-size: 15px; min-height: 1.5em; }
+  .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
+  .sticky { position: sticky; bottom: 0; background: var(--card); padding: 14px 0 4px; margin-top: 8px; }
+
+  /* findings */
+  .finding { padding: 14px 0; border-top: 1px solid var(--line); }
+  .finding:first-of-type { border-top: 0; padding-top: 4px; }
+  .finding a.t { color: var(--ink); font-weight: 600; text-decoration: none; }
+  .finding a.t:hover { text-decoration: underline; }
+  .finding .meta { font-size: 13px; color: var(--muted); margin-top: 3px; }
+  .finding .act { font-size: 13.5px; margin-top: 4px; }
+  .empty { color: var(--muted); font-size: 15px; }
+  footer { margin-top: 28px; font-size: 13px; color: var(--muted); }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">Sales Signals</div>
+  <h1>Know when a competitor's customer might be ready to switch.</h1>
+  <p class="lede">We watch competitor resellers, finance-software news and YouTube channels every 30 minutes, flag stories that signal a sales opportunity, and email you the suggested next step.</p>
+
+  <!-- 1. Enter email -->
+  <form class="card" id="step-email" hidden>
+    <h2>Sign in or sign up</h2>
+    <p>We'll email you a code. No password needed — the same email lets you change your alerts any time.</p>
+    <div class="field">
+      <label for="email">Your email</label>
+      <input id="email" type="email" autocomplete="email" required placeholder="you@example.com">
+    </div>
+    <button type="submit">Email me a code</button>
+    <div class="msg" role="status" aria-live="polite"></div>
+  </form>
+
+  <!-- 2. Enter code -->
+  <form class="card" id="step-code" hidden>
+    <h2>Check your inbox</h2>
+    <p>We sent a code to <b id="sent-to"></b>. Enter it below, or just tap the link in the email.</p>
+    <div class="field">
+      <label for="code">Code</label>
+      <input id="code" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="8" required>
+    </div>
+    <button type="submit">Continue</button>
+    <div class="row">
+      <button type="button" class="ghost" id="back">Use a different email</button>
+      <button type="button" class="ghost" id="resend">Resend code</button>
+    </div>
+    <div class="msg" role="status" aria-live="polite"></div>
+  </form>
+
+  <!-- 3. Signed in -->
+  <div id="step-edit" hidden>
+    <div class="account"><span>Signed in as <b id="who"></b></span>
+      <button type="button" class="ghost" id="signout">Sign out</button></div>
+
+    <section class="card" id="findings-card" hidden>
+      <h2>Latest signals</h2>
+      <p>Everything matched in the last 90 days, most important first.</p>
+      <div id="findings"></div>
+    </section>
+
+    <form class="card" id="alerts-form">
+      <h2 id="edit-title">Set up your alerts</h2>
+      <p id="edit-sub">Everything from the research brief is ticked to start with. Untick anything you don't need.</p>
+
+      <h3 class="sec">1 · What to watch</h3>
+      <div id="sources"></div>
+      <p class="hint" style="margin-top:10px">YouTube channels are checked automatically. LinkedIn, X and Facebook don't allow automatic reading, so they're listed as links; to monitor them, paste a feed address from a feed service below (see the README).</p>
+      <div class="field" style="margin-top:16px">
+        <label for="sites">Your own sites or feeds <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+        <p class="hint">One web address per line, up to 10. News pages, RSS feeds or social-media feed links.</p>
+        <textarea id="sites" placeholder="https://www.example-partner.co.uk/news"></textarea>
+      </div>
+
+      <h3 class="sec">2 · What counts as a signal</h3>
+      <div id="triggers"></div>
+      <div class="field" style="margin-top:16px">
+        <label for="keywords">Extra keywords <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+        <p class="hint">Separate with commas. Add * for any ending, e.g. <code>consolidat*</code>. Capitals-only words like <code>CFO</code> match exactly.</p>
+        <input id="keywords" type="text" placeholder="multi-entity, consolidat*, Opera 3">
+        <div class="chips" id="kw-chips"></div>
+      </div>
+      <div class="field">
+        <label for="exclude">Ignore stories containing <span style="font-weight:400;color:var(--muted)">(optional)</span></label>
+        <input id="exclude" type="text" placeholder="webinar, podcast, award">
+        <div class="chips" id="ex-chips"></div>
+      </div>
+
+      <h3 class="sec">3 · When to email</h3>
+      <div class="radios field">
+        <label><input type="radio" name="frequency" value="instant" checked>As they happen<small>Within ~30 minutes</small></label>
+        <label><input type="radio" name="frequency" value="daily">Daily<small>8am digest</small></label>
+        <label><input type="radio" name="frequency" value="weekly">Weekly<small>Monday 8am digest</small></label>
+      </div>
+      <label class="toggle" id="pause-row" hidden><input type="checkbox" id="paused"> Pause my alerts</label>
+
+      <div class="sticky">
+        <button type="submit" id="save">Start my alerts</button>
+        <div class="msg" role="status" aria-live="polite"></div>
+      </div>
+      <div class="row" id="delete-row" hidden>
+        <span></span><button type="button" class="ghost danger" id="delete">Delete my alerts</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Unsubscribe result -->
+  <div class="card" id="step-unsub" hidden>
+    <h2 id="unsub-title"></h2>
+    <p id="unsub-text"></p>
+    <a href="./">Back to Sales Signals</a>
+  </div>
+
+  <footer>Every alert email has a one-click unsubscribe link.</footer>
+</main>
+
+<script type="module">
+  import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+  import cfg from "./config.js";
+
+  const db = createClient(cfg.supabaseUrl, cfg.publishableKey);
+  const presets = await fetch("presets.json").then((r) => r.json());
+  const triggerById = Object.fromEntries(presets.triggers.map((t) => [t.id, t]));
+  const LEVEL = { "Very high": 3, "High": 2, "Medium": 1 };
+  const LEVEL_NAME = { 3: "Very high", 2: "High", 1: "Medium", 0: "Keyword" };
+
+  const $ = (id) => document.getElementById(id);
+  const el = (tag, props = {}, ...kids) => { const e = Object.assign(document.createElement(tag), props); e.append(...kids.filter((k) => k != null)); return e; };
+  const steps = ["step-email", "step-code", "step-edit", "step-unsub"];
+  const show = (id) => steps.forEach((s) => ($(s).hidden = s !== id));
+  const say = (form, text, kind = "") => { const m = form.querySelector(".msg"); m.textContent = text; m.className = "msg " + kind; };
+  const busy = (form, on) => form.querySelectorAll("button").forEach((b) => (b.disabled = on));
+
+  const words = (s) => [...new Set(s.split(",").map((w) => w.trim()).filter(Boolean))];
+  const lines = (s) => [...new Set(s.split(/\n+/).map((l) => l.trim()).filter(Boolean))]
+    .map((u) => (/^https?:\/\//i.test(u) ? u : "https://" + u));
+
+  function chips(input, box, cls) {
+    const render = () => box.replaceChildren(...words(input.value).map((w) => el("span", { className: "chip " + cls, textContent: w })));
+    input.addEventListener("input", render);
+    return render;
+  }
+  const renderKw = chips($("keywords"), $("kw-chips"), "");
+  const renderEx = chips($("exclude"), $("ex-chips"), "x");
+
+  // ---------- build the source + trigger checklists from presets.json ----------
+  const SOCIAL = [["youtube", "YouTube"], ["linkedin", "LinkedIn"], ["x", "X"], ["facebook", "Facebook"], ["instagram", "Instagram"]];
+
+  const allGroups = [];
+  const refreshAll = () => allGroups.forEach((g) => g.update());
+  function groupBox(title, rows, open) {
+    const all = el("input", { type: "checkbox", title: "Select all" });
+    const count = el("span", { className: "count" });
+    const update = () => {
+      const boxes = rows.map((r) => r.querySelector("input"));
+      const n = boxes.filter((b) => b.checked).length;
+      count.textContent = `${n}/${boxes.length}`;
+      all.checked = n === boxes.length; all.indeterminate = n > 0 && n < boxes.length;
+    };
+    all.addEventListener("click", (e) => {
+      e.stopPropagation();
+      rows.forEach((r) => { const b = r.querySelector("input");
+        document.querySelectorAll(`input.${b.className}[value="${b.value}"]`).forEach((x) => (x.checked = all.checked)); });
+      refreshAll();
+    });
+    const d = el("details", { className: "group", open }, el("summary", {}, all, el("span", { textContent: title }), count), el("div", { className: "items" }, ...rows));
+    d.update = update;
+    allGroups.push(d);
+    return d;
+  }
+
+  const sourceGroups = presets.groups.map((g) => {
+    const rows = presets.sources.filter((s) => s.groups.includes(g.id)).map((s) => {
+      const box = el("input", { type: "checkbox", value: s.id, className: "src" });
+      // a source in two groups shares one ticked state
+      box.addEventListener("change", () => { document.querySelectorAll(`input.src[value="${s.id}"]`).forEach((b) => { b.checked = box.checked; }); refreshAll(); });
+      const social = SOCIAL.filter(([k]) => s.social?.[k]).map(([k, label]) =>
+        el("a", { href: s.social[k], target: "_blank", rel: "noopener", textContent: label, className: k === "youtube" ? "on" : "",
+                  title: k === "youtube" ? "Checked automatically" : "Link only" }));
+      return el("label", { className: "item" }, box,
+        el("span", {}, el("span", { className: "name", textContent: s.name }),
+           s.priority ? el("span", { className: "badge " + (s.priority === "High" ? "b2" : "b1"), textContent: s.priority }) : null),
+        el("span", { className: "sub", textContent: s.note }),
+        social.length ? el("span", { className: "social" }, ...social) : null);
+    });
+    return groupBox(g.name, rows, false);
+  });
+  $("sources").append(...sourceGroups);
+
+  const trigGroup = groupBox("Sales triggers", presets.triggers.map((t) => el("label", { className: "item" },
+    (() => { const b = el("input", { type: "checkbox", value: t.id, className: "trg" }); b.addEventListener("change", refreshAll); return b; })(),
+    el("span", {}, el("span", { className: "name", textContent: t.name }), el("span", { className: "badge b" + LEVEL[t.relevance], textContent: t.relevance })),
+    el("span", { className: "sub", textContent: "→ " + t.action }))), true);
+  $("triggers").append(trigGroup);
+
+  const ticked = (cls) => [...new Set([...document.querySelectorAll(`input.${cls}:checked`)].map((b) => b.value))];
+  const setTicked = (cls, ids) => { document.querySelectorAll(`input.${cls}`).forEach((b) => (b.checked = ids.includes(b.value))); refreshAll(); };
+
+  // ---------- sign in ----------
+  let pendingEmail = "";
+  async function sendCode(form) {
+    busy(form, true); say(form, "Sending…");
+    const { error } = await db.auth.signInWithOtp({
+      email: pendingEmail, options: { emailRedirectTo: location.origin + location.pathname } });
+    busy(form, false);
+    if (error) { say(form, error.status === 429 ? "Too many requests — wait a minute and try again." : "Couldn't send the code. Check the address and try again.", "err"); return false; }
+    return true;
+  }
+
+  $("step-email").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    pendingEmail = $("email").value.trim().toLowerCase();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(pendingEmail)) return say(e.target, "Please enter a valid email address.", "err");
+    if (await sendCode(e.target)) {
+      say(e.target, ""); $("sent-to").textContent = pendingEmail; $("code").value = "";
+      show("step-code"); $("code").focus();
+    }
+  });
+
+  $("step-code").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const token = $("code").value.replace(/\D/g, "");
+    if (token.length < 6) return say(e.target, "Enter the code from the email.", "err");
+    busy(e.target, true); say(e.target, "Checking…");
+    const { error } = await db.auth.verifyOtp({ email: pendingEmail, token, type: "email" });
+    busy(e.target, false);
+    if (error) say(e.target, "That code didn't work — it may have expired. Try resending.", "err");
+  });
+  $("back").onclick = () => show("step-email");
+  $("resend").onclick = async () => { if (await sendCode($("step-code"))) say($("step-code"), "New code sent.", "ok"); };
+  $("signout").onclick = () => db.auth.signOut();
+
+  // ---------- findings ----------
+  async function loadFindings() {
+    const { data } = await db.from("findings").select("id, title, link, source, triggers, keyword, relevance, found_at")
+      .order("relevance", { ascending: false }).order("found_at", { ascending: false }).limit(50);
+    const list = $("findings");
+    $("findings-card").hidden = !hasRow;
+    if (!data?.length) { list.replaceChildren(el("p", { className: "empty", textContent: "Nothing yet — new signals will appear here and in your inbox." })); return; }
+    list.replaceChildren(...data.map((f) => {
+      const ts = f.triggers.map((t) => triggerById[t]).filter(Boolean);
+      const why = ts.map((t) => t.name).join(" · ") || `Matched “${f.keyword}”`;
+      const dismiss = el("button", { type: "button", className: "mini", textContent: "Dismiss" });
+      const row = el("div", { className: "finding" },
+        el("a", { className: "t", href: f.link, target: "_blank", rel: "noopener", textContent: f.title }),
+        el("span", { className: "badge b" + f.relevance, textContent: LEVEL_NAME[f.relevance] }),
+        el("div", { className: "meta", textContent: `${f.source} · ${new Date(f.found_at).toLocaleDateString("en-GB", { day: "numeric", month: "short" })} · ${why}` }),
+        ts.length ? el("div", { className: "act", textContent: "→ " + ts[0].action }) : null,
+        el("div", { className: "meta" }, dismiss));
+      dismiss.onclick = async () => { const { error } = await db.from("findings").delete().eq("id", f.id); if (!error) row.remove(); };
+      return row;
+    }));
+  }
+
+  // ---------- edit alerts ----------
+  let hasRow = false;
+  async function loadAlerts(user) {
+    $("who").textContent = user.email;
+    const form = $("alerts-form");
+    say(form, "");
+    const { data, error } = await db.from("alerts").select("sites, sources, triggers, keywords, exclude, frequency, paused").maybeSingle();
+    if (error) say(form, "Couldn't load your alerts. Try refreshing.", "err");
+    hasRow = !!data;
+    // New users start with everything from the brief ticked
+    setTicked("src", data ? data.sources : presets.sources.map((s) => s.id));
+    setTicked("trg", data ? data.triggers : presets.triggers.map((t) => t.id));
+    $("sites").value = data ? data.sites.join("\n") : "";
+    $("keywords").value = data ? data.keywords.join(", ") : "";
+    $("exclude").value = data ? data.exclude.join(", ") : "";
+    form.querySelector(`input[name=frequency][value=${data?.frequency || "instant"}]`).checked = true;
+    $("paused").checked = data ? data.paused : false;
+    renderKw(); renderEx(); setMode();
+    show("step-edit");
+    loadFindings();
+  }
+  function setMode() {
+    $("edit-title").textContent = hasRow ? "Your alerts" : "Set up your alerts";
+    $("edit-sub").textContent = hasRow ? "Change anything and save." : "Everything from the research brief is ticked to start with. Untick anything you don't need.";
+    $("save").textContent = hasRow ? "Save changes" : "Start my alerts";
+    $("pause-row").hidden = $("delete-row").hidden = !hasRow;
+  }
+
+  function validate(r) {
+    if (!r.sources.length && !r.sites.length) return "Choose at least one source to watch.";
+    if (r.sites.length > 10) return "That's more than 10 of your own sites — please trim the list.";
+    for (const u of r.sites) {
+      try { new URL(u); } catch { return `“${u}” doesn't look like a web address.`; }
+      if (u.length > 500) return "One of the site addresses is too long.";
+    }
+    if (!r.triggers.length && !r.keywords.length) return "Choose at least one sales trigger or add a keyword.";
+    if (r.keywords.length > 30 || r.exclude.length > 30) return "Please use 30 words or fewer in each list.";
+    if ([...r.keywords, ...r.exclude].some((w) => w.length > 60)) return "Keep each keyword under 60 characters.";
+    return null;
+  }
+
+  $("alerts-form").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const row = { sources: ticked("src"), triggers: ticked("trg"), sites: lines($("sites").value),
+                  keywords: words($("keywords").value), exclude: words($("exclude").value),
+                  frequency: form.querySelector("input[name=frequency]:checked").value, paused: $("paused").checked };
+    const problem = validate(row);
+    if (problem) return say(form, problem, "err");
+    busy(form, true); say(form, "Saving…");
+    const { data: { user } } = await db.auth.getUser();
+    const { error } = hasRow
+      ? await db.from("alerts").update(row).eq("user_id", user.id)
+      : await db.from("alerts").insert(row);
+    busy(form, false);
+    if (error) return say(form, "Something went wrong saving that. Please try again.", "err");
+    $("sites").value = row.sites.join("\n"); $("keywords").value = row.keywords.join(", ");
+    $("exclude").value = row.exclude.join(", "); renderKw(); renderEx();
+    const wasNew = !hasRow; hasRow = true; setMode();
+    if (wasNew) loadFindings();
+    say(form, row.paused ? "Saved. Your alerts are paused."
+            : wasNew ? "You're all set! The first check records what's already published; new signals come after that."
+            : "Saved.", "ok");
+  });
+
+  $("delete").onclick = async () => {
+    if (!confirm("Delete your alerts and saved signals? You'll stop getting emails.")) return;
+    const form = $("alerts-form");
+    const { data: { user } } = await db.auth.getUser();
+    const { error } = await db.from("alerts").delete().eq("user_id", user.id);
+    if (error) return say(form, "Couldn't delete — please try again.", "err");
+    hasRow = false; await loadAlerts(user);
+    say(form, "Deleted. You won't get any more emails.", "ok");
+  };
+
+  // ---------- start ----------
+  const q = new URLSearchParams(location.search);
+  if (q.has("unsubscribe")) {
+    show("step-unsub"); $("unsub-title").textContent = "Unsubscribing…";
+    const { data, error } = await db.rpc("unsubscribe", { t: q.get("unsubscribe") });
+    $("unsub-title").textContent = error ? "Something went wrong." : data ? "Unsubscribed." : "Already unsubscribed.";
+    $("unsub-text").textContent = error ? "Please try the link again in a moment."
+      : data ? "You won't get any more alerts. You can set them up again any time." : "There were no alerts left for that link.";
+    history.replaceState(null, "", location.pathname);
+  } else {
+    let shownUser;  // ignore token refreshes so unsaved edits aren't wiped
+    db.auth.onAuthStateChange((event, session) => {
+      const user = session?.user;
+      if ((user?.id ?? null) === shownUser) return;
+      shownUser = user?.id ?? null;
+      setTimeout(() => (user ? loadAlerts(user) : show("step-email")), 0);
+    });
+  }
+</script>
+</body>
+</html>

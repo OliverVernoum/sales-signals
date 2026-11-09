@@ -1,0 +1,261 @@
+{
+  "groups": [
+    { "id": "sage200", "name": "Sage 200 resellers" },
+    { "id": "intacct", "name": "Sage Intacct resellers" },
+    { "id": "competitors", "name": "Other finance software competitors" },
+    { "id": "news", "name": "Finance software news" }
+  ],
+
+  "sources": [
+    {
+      "id": "pkfscs", "name": "PKF Smith Cooper Systems", "groups": ["sage200", "intacct"], "priority": "High",
+      "note": "Sage 200 updates, upgrades and end-of-support notices",
+      "urls": [
+        { "url": "https://www.pkfscs.co.uk/blog/feed/", "kind": "news" },
+        { "url": "https://www.pkfscs.co.uk/case-studies/", "kind": "case_studies" },
+        { "url": "https://www.youtube.com/feeds/videos.xml?channel_id=UCLXicO0vDlRRHaat10wcyqw", "kind": "youtube" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/pkf-smith-cooper-systems",
+        "x": "https://x.com/PKF_SCS",
+        "youtube": "https://www.youtube.com/channel/UCLXicO0vDlRRHaat10wcyqw",
+        "facebook": "https://www.facebook.com/PKFSmithCooperSystems",
+        "instagram": "https://www.instagram.com/pkf_smithcoopersystems/"
+      }
+    },
+    {
+      "id": "datel", "name": "Datel", "groups": ["sage200", "intacct"], "priority": "High",
+      "note": "Sage 200, Sage Intacct, customer success",
+      "urls": [
+        { "url": "https://datel.info/insights", "kind": "news" },
+        { "url": "https://datel.info/case-studies", "kind": "case_studies" }
+      ],
+      "social": {}
+    },
+    {
+      "id": "cpio", "name": "CPiO", "groups": ["sage200", "intacct"], "priority": "High",
+      "note": "Sage migrations, finance transformation, case studies",
+      "urls": [
+        { "url": "https://www.cpio.co.uk/latest-news/", "kind": "news" },
+        { "url": "https://www.cpio.co.uk/blog", "kind": "news" },
+        { "url": "https://www.cpio.co.uk/case-studies", "kind": "case_studies" },
+        { "url": "https://www.youtube.com/c/CPiOLimited", "kind": "youtube" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/cpio-limited/",
+        "x": "https://twitter.com/CPiOSage",
+        "youtube": "https://www.youtube.com/c/CPiOLimited",
+        "facebook": "https://www.facebook.com/cpiolimited/"
+      }
+    },
+    {
+      "id": "eureka", "name": "Eureka Solutions", "groups": ["sage200"], "priority": "High",
+      "note": "Manufacturing, distribution and ERP projects",
+      "urls": [
+        { "url": "https://eurekasolutions.co.uk/resources/", "kind": "news" },
+        { "url": "https://eurekasolutions.co.uk/case-studies/", "kind": "case_studies" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/eureka-solutions-scotland-ltd/",
+        "x": "https://twitter.com/eurekasolutions",
+        "facebook": "https://www.facebook.com/EurekaSolutionsLtd/"
+      }
+    },
+    {
+      "id": "kinspeed", "name": "Kinspeed", "groups": ["sage200", "intacct"], "priority": "High",
+      "note": "Sage 50, Sage 200 and Intacct migration",
+      "urls": [
+        { "url": "https://kinspeed.com/blog/", "kind": "news" },
+        { "url": "https://kinspeed.com/case-studies/", "kind": "case_studies" }
+      ],
+      "social": { "facebook": "https://www.facebook.com/KinspeedSoftware/" }
+    },
+    {
+      "id": "techpartners", "name": "Technology Partners", "groups": ["sage200"], "priority": "High",
+      "note": "Sage 200 and Intacct news",
+      "urls": [
+        { "url": "https://technologypartners.co.uk/insights-and-news/", "kind": "news" }
+      ],
+      "social": { "linkedin": "https://www.linkedin.com/company/technology-partners-limited/" }
+    },
+    {
+      "id": "mysoft", "name": "Mysoft", "groups": ["sage200", "intacct"], "priority": "Medium",
+      "note": "ERP integrations, retail and distribution",
+      "urls": [
+        { "url": "https://www.mysoftx3.com/cxo-hub/content-hub/", "kind": "news" },
+        { "url": "https://www.mysoftx3.com/our-story/customers/", "kind": "case_studies" },
+        { "url": "https://www.youtube.com/@mysoftLtd", "kind": "youtube" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/360242/",
+        "youtube": "https://www.youtube.com/@mysoftLtd"
+      }
+    },
+    {
+      "id": "percipient", "name": "Percipient", "groups": ["intacct"],
+      "note": "Cloud finance transformations, Intacct customer stories",
+      "urls": [
+        { "url": "https://percipient.co.uk/category/news/", "kind": "news" },
+        { "url": "https://percipient.co.uk/category/blog/", "kind": "news" },
+        { "url": "https://percipient.co.uk/knowledge-hub/success-stories/", "kind": "case_studies" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/percipient/",
+        "facebook": "https://www.facebook.com/PercipientInfo",
+        "instagram": "https://www.instagram.com/percipient_info/"
+      }
+    },
+    {
+      "id": "x3consulting", "name": "X3 Consulting", "groups": ["intacct"],
+      "note": "Sage Intacct and X3 projects",
+      "urls": [
+        { "url": "https://x3consulting.com/news/", "kind": "news" },
+        { "url": "https://x3consulting.com/case-studies/", "kind": "case_studies" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/x3-consulting-ltd/",
+        "x": "https://twitter.com/X3ConsultingLtd",
+        "facebook": "https://www.facebook.com/X3Consulting"
+      }
+    },
+    {
+      "id": "inixion", "name": "Inixion", "groups": ["intacct"],
+      "note": "Sage Intacct consultancy and implementation (part of Pine Services Group)",
+      "urls": [
+        { "url": "https://inixion.com/articles/", "kind": "news" },
+        { "url": "https://inixion.com/customer-success-stories/", "kind": "case_studies" }
+      ],
+      "social": { "linkedin": "https://www.linkedin.com/company/inixion-limited/" }
+    },
+
+    {
+      "id": "access", "name": "Access Group (Access Financials, Exchequer)", "groups": ["competitors"],
+      "note": "Established finance systems, modernisation, mid-market reporting",
+      "urls": [
+        { "url": "https://www.theaccessgroup.com/en-gb/about/news/", "kind": "news" },
+        { "url": "https://www.theaccessgroup.com/en-gb/blog/", "kind": "news" },
+        { "url": "https://www.youtube.com/feeds/videos.xml?user=theaccessgrouptv", "kind": "youtube" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/accessgroup",
+        "x": "https://x.com/theaccessgroup",
+        "youtube": "https://www.youtube.com/user/theaccessgrouptv",
+        "facebook": "https://www.facebook.com/TheAccessGroup/"
+      }
+    },
+    {
+      "id": "sapb1", "name": "SAP Business One (SAP UK News)", "groups": ["competitors"],
+      "note": "Growing manufacturing and distribution businesses",
+      "urls": [ { "url": "https://news.sap.com/uk/", "kind": "news" } ],
+      "social": {}
+    },
+    {
+      "id": "xero", "name": "Xero", "groups": ["competitors"],
+      "note": "Businesses outgrowing basic accounting software",
+      "urls": [
+        { "url": "https://blog.xero.com/", "kind": "news" },
+        { "url": "https://www.youtube.com/feeds/videos.xml?user=XeroOnlineAccounting", "kind": "youtube" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/xero",
+        "x": "https://twitter.com/xero/",
+        "youtube": "https://www.youtube.com/user/XeroOnlineAccounting",
+        "facebook": "https://www.facebook.com/xero",
+        "instagram": "https://www.instagram.com/xero/"
+      }
+    },
+
+    {
+      "id": "accountingweb", "name": "AccountingWEB", "groups": ["news"],
+      "note": "Accounting tech, Sage developments, AI, product announcements",
+      "urls": [ { "url": "https://www.accountingweb.co.uk/", "kind": "news" } ],
+      "social": {}
+    },
+    {
+      "id": "icaew", "name": "ICAEW News", "groups": ["news"],
+      "note": "Reporting, regulation and Companies House changes that trigger system reviews",
+      "urls": [ { "url": "https://www.icaew.com/insights/latest-news", "kind": "news" } ],
+      "social": {}
+    },
+    {
+      "id": "accountex", "name": "Accountex Insight", "groups": ["news"],
+      "note": "Accounting technology, software launches, AI and industry trends",
+      "urls": [ { "url": "https://www.accountex.co.uk/insight/feed/", "kind": "news" } ],
+      "social": {}
+    },
+    {
+      "id": "appadvisoryplus", "name": "App Advisory Plus", "groups": ["news"],
+      "note": "Accounting apps, integrations and automation",
+      "urls": [
+        { "url": "https://www.appadvisoryplus.com/resources/blog", "kind": "news" },
+        { "url": "https://www.youtube.com/@appadvisoryplus9865", "kind": "youtube" }
+      ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/40702376/",
+        "x": "https://twitter.com/AppAdvisoryPlus",
+        "youtube": "https://www.youtube.com/@appadvisoryplus9865",
+        "facebook": "https://www.facebook.com/appadvisoryplus"
+      }
+    },
+    {
+      "id": "erptoday", "name": "ERP Today", "groups": ["news"],
+      "note": "ERP vendor news, acquisitions, cloud and finance transformation",
+      "urls": [ { "url": "https://erp.today/category/erp-news/", "kind": "news" } ],
+      "social": {
+        "linkedin": "https://www.linkedin.com/company/erp-today",
+        "x": "https://x.com/erp_today",
+        "instagram": "https://www.instagram.com/erp_today/"
+      }
+    }
+  ],
+
+  "triggers": [
+    {
+      "id": "end_of_support", "name": "Version approaching end of support", "relevance": "Very high",
+      "action": "Identify customers facing upgrade decisions",
+      "all": [["end of support", "end of life", "end-of-life", "retire*", "no longer supported", "support ends", "support will end", "mandatory upgrade", "upgrade deadline", "sunset*", "discontinu*", "withdrawn"]]
+    },
+    {
+      "id": "acquisition", "name": "Company acquires another business", "relevance": "Very high",
+      "action": "Investigate multi-entity reporting and consolidation",
+      "all": [["acquire*", "acquisition*", "merger", "merges", "merged", "takeover", "takes over", "buys", "bought"]]
+    },
+    {
+      "id": "new_fd", "name": "Company appoints new FD/CFO", "relevance": "Very high",
+      "action": "Approach during potential finance transformation review",
+      "all": [
+        ["CFO", "chief financial officer", "finance director", "FD", "financial controller", "head of finance"],
+        ["appoint*", "join*", "hire*", "welcome*", "new", "promot*", "named"]
+      ]
+    },
+    {
+      "id": "price_increase", "name": "Finance system price increase", "relevance": "High",
+      "action": "Compare total cost of ownership",
+      "all": [["price increase*", "price rise*", "price hike*", "pricing change*", "new pricing", "increase* prices", "raising prices", "licence cost*", "subscription cost*"]]
+    },
+    {
+      "id": "migration", "name": "Legacy finance system migration", "relevance": "High",
+      "action": "Identify other users on the same platform",
+      "all": [["migrat*", "moving from", "move from", "moved from", "switch* from", "replac*", "legacy", "outgrown", "outgrow*"]]
+    },
+    {
+      "id": "case_study", "name": "New customer case study", "relevance": "High",
+      "action": "Capture system, company, sector and implementation date",
+      "all": [["case study", "customer story", "success story", "goes live", "go-live", "go live", "went live", "selects", "chooses", "chose", "implement*", "transform*", "rolls out"]],
+      "kinds": ["case_studies"]
+    },
+    {
+      "id": "intl_expansion", "name": "Company expands internationally", "relevance": "High",
+      "action": "Explore multi-currency and consolidation needs",
+      "all": [
+        ["expand*", "expansion", "opens", "launch*", "enters", "growth"],
+        ["international*", "overseas", "global*", "Europe*", "US", "USA", "North America", "new office", "new market*", "worldwide", "abroad"]
+      ]
+    },
+    {
+      "id": "new_features", "name": "Competitor announces new features", "relevance": "Medium",
+      "action": "Update your competitive knowledge and sales positioning",
+      "all": [["new feature*", "release*", "launch*", "introduc*", "what's new", "R1", "R2", "product update*", "now available", "unveil*", "AI"]]
+    }
+  ]
+}
