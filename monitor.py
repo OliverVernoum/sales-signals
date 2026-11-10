@@ -50,11 +50,12 @@ HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; story-monitor/1.0)"}
 # ---------- Supabase ----------
 
 def sb(method, path, prefer="return=minimal", **kw):
-    key = os.environ["SUPABASE_SERVICE_KEY"]
+    key = os.environ["SUPABASE_SERVICE_KEY"].strip()
     headers = {"apikey": key, "Content-Type": "application/json", "Prefer": prefer}
     if not key.startswith("sb_"):  # legacy JWT keys also go in Authorization
         headers["Authorization"] = f"Bearer {key}"
-    url = os.environ["SUPABASE_URL"].rstrip("/") + "/rest/v1/" + path
+    base = urlparse(os.environ["SUPABASE_URL"].strip())
+    url = f"{base.scheme}://{base.netloc}/rest/v1/{path}"  # ignore any extra path pasted in
     r = requests.request(method, url, headers=headers, timeout=30, **kw)
     r.raise_for_status()
     return r.json() if r.content else None

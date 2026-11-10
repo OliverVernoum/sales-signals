@@ -200,7 +200,9 @@
   import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
   import cfg from "./config.js";
 
-  const db = createClient(cfg.supabaseUrl, cfg.publishableKey);
+  // Use only the main address, even if extra bits like /rest/v1/ were pasted in
+  const supabaseUrl = new URL(cfg.supabaseUrl.trim()).origin;
+  const db = createClient(supabaseUrl, cfg.publishableKey.trim());
   const presets = await fetch("presets.json").then((r) => r.json());
   const triggerById = Object.fromEntries(presets.triggers.map((t) => [t.id, t]));
   const LEVEL = { "Very high": 3, "High": 2, "Medium": 1 };
